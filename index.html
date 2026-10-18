@@ -47,6 +47,8 @@ header { display:flex; align-items:baseline; justify-content:space-between; padd
 .play .p2 { display:none; }
 .play.on .p2 { display:block; }
 .play.on .p1 { display:none; }
+.play.loading { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:.35 } }
 .time { font-size:11px; color:rgba(252,252,252,.75); font-variant-numeric:tabular-nums; }
 .seek { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,.18); overflow:hidden; }
 .seek i { display:block; height:100%; width:0; background:var(--lime); }
@@ -219,7 +221,9 @@ stage.addEventListener('pointermove', (e) => { if (dragging) setPos(posFrom(e), 
 
 el('play').addEventListener('click', (e) => {
   e.stopPropagation();
-  if (playing) { stopAll(); } else { play().catch((err) => console.error(err)); }
+  if (playing) { stopAll(); return; }
+  el('play').classList.add('loading');
+  play().then(() => el('play').classList.remove('loading')).catch((err) => { el('play').classList.remove('loading'); console.error(err); });
 });
 
 nums.forEach((b) => b.addEventListener('click', async () => {
