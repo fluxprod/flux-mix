@@ -337,7 +337,7 @@ TRACKS.forEach((t, i) => {
   playBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (i !== idx) { idx = i; offset = 0; stop(); layout(); }
-    playing ? (stop(), offset = 0) : play();
+    if (playing) { stop(); offset = 0; } else { play().catch((e) => console.error('play error', e)); }
   });
   c.appendChild(playBtn);
 });
