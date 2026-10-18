@@ -254,6 +254,9 @@ function drawStatic() {
 
 setPos(0.5, 0.05);
 drawStatic();
+
+// заранее грузим первый трек, чтобы play срабатывал мгновенно
+setTimeout(() => { loadPair(idx).catch(() => {}); }, 250);
 </script>
 </body>
 </html>
